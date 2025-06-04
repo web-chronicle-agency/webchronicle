@@ -1313,7 +1313,7 @@ footer {
     cursor: pointer;
 }
 
-.blog-title {
+.menu-item h2 {
     font-size: 18px;
     margin-bottom: 10px;
     color: #00a591;
