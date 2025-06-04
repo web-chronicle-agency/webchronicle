@@ -1243,13 +1243,13 @@ footer {
     }
 
     .menu-items{
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 1900px) {
     .menu-items{
-        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
 }
 
