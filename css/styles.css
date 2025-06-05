@@ -705,10 +705,92 @@ nav {
 
 /* Work Section */
 #work {
-  padding: 20px;
+  padding: 60px 20px;
   background-color: #0e0e0e;
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Work Items Container */
+.work-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Individual Work Card */
+.work-item {
+  display: flex;
+  flex-direction: row; /* row on desktop */
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.work-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Image Container */
+.work-img {
+  flex: 0 0 35%;  /* takes 35% width */
+  aspect-ratio: 1400 / 650; /* maintain image ratio */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a1a1a; /* optional */
+  overflow: hidden;
+}
+
+.work-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.inside-img{
+    border-radius: 10px;
+}
+
+/* Text Content */
+.work-content {
+  flex: 1;          /* takes remaining width */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.work-content h3 {
+    align-items: center;
+    color: #33b8a9;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .work-item {
+    flex-direction: column;
+  }
+
+  .work-img {
+    aspect-ratio: auto; /* Allows the image to adjust naturally on smaller screens */
+    height: auto;
+  }
+
+  .work-img img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .work-content {
+    padding: 20px;
+  }
 }
 
 
