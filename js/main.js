@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const header = document.querySelector("header");
   const navToggle = document.getElementById("navToggle");
   const navLinks = document.getElementById("navLinks");
-  const filterBtns = document.querySelectorAll(".filter-btn");
-  const workItems = document.querySelectorAll(".work-item");
   const dots = document.querySelectorAll(".dot");
   const testimonialSlides = document.querySelectorAll(".testimonial-slide");
   const contactForm = document.getElementById("contactForm");
@@ -20,6 +18,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  function hideSlider() {
+    document.getElementById("notification-slider").classList.remove("show");
+  }
+  function showSlider(message = "Notification message here.") {
+    const slider = document.getElementById("notification-slider");
+    document.getElementById("slider-message").textContent = message;
+    slider.classList.add("show");
+
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      hideSlider();
+    }, 5000);
+  }
+
+  document.querySelector('.Notification').addEventListener("click", ()=>{
+    showSlider();
+  })
+
+  document.querySelector(".hideSlider").addEventListener("click", ()=>{
+    hideSlider();
+  })
+  
   // Mobile Navigation Toggle
   if (navToggle) {
     navToggle.addEventListener("click", function () {
@@ -44,61 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Portfolio Filter
-  if (filterBtns.length > 0 && workItems.length > 0) {
-    filterBtns.forEach((btn) => {
-      btn.addEventListener("click", function () {
-        // Remove active class from all buttons
-        filterBtns.forEach((btn) => btn.classList.remove("active"));
-
-        // Work section scroll animations
-        const workItems = document.querySelectorAll('.work-item');
-        workItems.forEach((item, index) => {
-            item.style.setProperty('--index', index);
-        });
-
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: "0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        workItems.forEach(item => observer.observe(item));
-
-        // Add active class to clicked button
-        this.classList.add("active");
-
-        const filterValue = this.getAttribute("data-filter");
-
-        // Filter work items
-        workItems.forEach((item) => {
-          if (
-            filterValue === "all" ||
-            item.getAttribute("data-category") === filterValue
-          ) {
-            item.style.display = "block";
-            setTimeout(() => {
-              item.style.opacity = "1";
-              item.style.transform = "scale(1)";
-            }, 50);
-          } else {
-            item.style.opacity = "0";
-            item.style.transform = "scale(0.8)";
-            setTimeout(() => {
-              item.style.display = "none";
-            }, 300);
-          }
-        });
-      });
-    });
-  }
 
   // Testimonial Slider
   if (dots.length > 0 && testimonialSlides.length > 0) {
@@ -145,21 +110,22 @@ document.addEventListener("DOMContentLoaded", function () {
       const email = document.getElementById("email").value.trim();
       const number = document.getElementById("number").value.trim();
       const message = document.getElementById("message").value.trim();
+      
 
-      if (!name || !email || !number || !message) {
-        alert("Please fill all the required fields.");
+      if (!name || !email || !number) {
+        showSlider("Please fill all the required fields.");
         return;
       }
 
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(email)) {
-        alert("Please enter a valid email address.");
+        showSlider("Please enter a valid email address.");
         return;
       }
 
       const numberPattern = /^\+?\d{7,15}$/;
       if (!numberPattern.test(number)) {
-        alert("Please enter a valid phone number.");
+        showSlider("Please enter a valid phone number.");
         return;
       }
 
@@ -168,12 +134,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .sendForm("emailjsservice", "template_90a6rja", "#contactForm")
         .then(
           function (response) {
-            alert("Thank you! Your message has been sent.");
+            showSlider("Thank you😊! Looking forward talking with you.");
             contactForm.reset();
           },
           function (error) {
             console.error("Email sending error:", error);
-            alert("Oops! Something went wrong. Please try again later.");
+            showSlider("Oops😕! Something went wrong. Please try again later ");
           }
         );
     });
@@ -203,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Animation on scroll
   const animateOnScroll = function () {
     const elements = document.querySelectorAll(
-      ".service-card, .work-item, .team-member, .about-image, .about-text"
+      ".service-card, .work-item, .about-image, .about-text"
     );
 
     elements.forEach((element) => {
@@ -223,13 +189,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add CSS for animations
   const style = document.createElement("style");
   style.textContent = `
-        .service-card, .work-item, .team-member, .about-image, .about-text {
+        .service-card, .work-item, .about-image, .about-text {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
         
-        .service-card.animate, .work-item.animate, .team-member.animate, .about-image.animate, .about-text.animate {
+        .service-card.animate, .work-item.animate, .about-image.animate, .about-text.animate {
             opacity: 1;
             transform: translateY(0);
         }
