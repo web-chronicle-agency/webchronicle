@@ -856,6 +856,11 @@ nav {
     margin-bottom: var(--spacing-sm);
 }
 
+.invert{
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1)
+}
+
 .testimonial-content{
         border-radius: 10px;
 }
