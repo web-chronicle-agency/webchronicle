@@ -1,194 +1,182 @@
 /* global emailjs */
-document.addEventListener("DOMContentLoaded", function () {
-    emailjs.init("B3chDBzEpo7GvLByU");
-  // Variables
-  const header = document.querySelector("header");
-  const navToggle = document.getElementById("navToggle");
-  const navLinks = document.getElementById("navLinks");
-  const dots = document.querySelectorAll(".dot");
-  const testimonialSlides = document.querySelectorAll(".testimonial-slide");
-  const contactForm = document.getElementById("contactForm");
+emailjs.init("B3chDBzEpo7GvLByU");
+// Variables
+const header = document.querySelector("header");
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
+const dots = document.querySelectorAll(".dot");
+const testimonialSlides = document.querySelectorAll(".testimonial-slide");
+const contactForm = document.getElementById("contactForm");
 
-  // Sticky Header
-  window.addEventListener("scroll", function () {
-    if (window.scrollY > 50) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
-  });
-
-  function hideSlider() {
-    document.getElementById("notification-slider").classList.remove("show");
+// Sticky Header
+window.addEventListener("scroll", function () {
+  if (window.scrollY > 50) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
   }
-  function showSlider(message = "Notification message here.") {
-    const slider = document.getElementById("notification-slider");
-    document.getElementById("slider-message").textContent = message;
-    slider.classList.add("show");
+});
 
-    // Auto-dismiss after 5 seconds
-    setTimeout(() => {
-      hideSlider();
-    }, 5000);
-  }
+function hideSlider() {
+  document.getElementById("notification-slider").classList.remove("show");
+}
+function showSlider(message) {
+  const slider = document.getElementById("notification-slider");
+  document.getElementById("slider-message").textContent = message;
+  slider.classList.add("show");
 
-  document.querySelector('.Notification').addEventListener("click", ()=>{
-    showSlider();
-  })
-
-  document.querySelector(".hideSlider").addEventListener("click", ()=>{
+  // Auto-dismiss after 5 seconds
+  setTimeout(() => {
     hideSlider();
-  })
-  
-  // Mobile Navigation Toggle
-  if (navToggle) {
-    navToggle.addEventListener("click", function () {
-      navLinks.classList.toggle("active");
+  }, 5000);
+}
 
-      // Toggle hamburger animation
+document.querySelector(".hideSlider").addEventListener("click", () => {
+  hideSlider();
+});
+
+// Mobile Navigation Toggle
+if (navToggle) {
+  console.log("navToggle");
+  navToggle.addEventListener("click", function () {
+    navLinks.classList.toggle("active");
+
+    // Toggle hamburger animation
+    const spans = navToggle.querySelectorAll("span");
+    spans.forEach((span) => span.classList.toggle("active"));
+  });
+}
+
+// Close mobile nav when clicking a link
+document.querySelectorAll(".nav-links a").forEach((link) => {
+  link.addEventListener("click", function () {
+    if (navLinks.classList.contains("active")) {
+      navLinks.classList.remove("active");
+
+      // Reset hamburger icon
       const spans = navToggle.querySelectorAll("span");
-      spans.forEach((span) => span.classList.toggle("active"));
-    });
-  }
-
-  // Close mobile nav when clicking a link
-  document.querySelectorAll(".nav-links a").forEach((link) => {
-    link.addEventListener("click", function () {
-      if (navLinks.classList.contains("active")) {
-        navLinks.classList.remove("active");
-
-        // Reset hamburger icon
-        const spans = navToggle.querySelectorAll("span");
-        spans.forEach((span) => span.classList.remove("active"));
-      }
-    });
-  });
-
-
-  // Testimonial Slider
-  if (dots.length > 0 && testimonialSlides.length > 0) {
-    // Set initial state
-    showSlide(0);
-
-    // Add click event to dots
-    dots.forEach((dot, index) => {
-      dot.addEventListener("click", function () {
-        showSlide(index);
-      });
-    });
-
-    // Auto slide every 5 seconds
-    let currentSlide = 0;
-    setInterval(() => {
-      currentSlide = (currentSlide + 1) % testimonialSlides.length;
-      showSlide(currentSlide);
-    }, 5000);
-
-    function showSlide(index) {
-      // Hide all slides
-      testimonialSlides.forEach((slide) => {
-        slide.style.display = "none";
-      });
-
-      // Remove active class from all dots
-      dots.forEach((dot) => {
-        dot.classList.remove("active");
-      });
-
-      // Show the selected slide and activate the dot
-      testimonialSlides[index].style.display = "block";
-      dots[index].classList.add("active");
+      spans.forEach((span) => span.classList.remove("active"));
     }
-  }
+  });
+});
 
-  // Contact Form Submission
-  if (contactForm) {
-    contactForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+// Testimonial Slider
+if (dots.length > 0 && testimonialSlides.length > 0) {
+  console.log("Testimonial Script")
+  let currentSlide = 0;
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const number = document.getElementById("number").value.trim();
-      const message = document.getElementById("message").value.trim();
-      
+  showSlide(currentSlide);
 
-      if (!name || !email || !number) {
-        showSlider("Please fill all the required fields.");
-        return;
-      }
-
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(email)) {
-        showSlider("Please enter a valid email address.");
-        return;
-      }
-
-      const numberPattern = /^\+?\d{7,15}$/;
-      if (!numberPattern.test(number)) {
-        showSlider("Please enter a valid phone number.");
-        return;
-      }
-
-      // Send email using EmailJS
-      emailjs
-        .sendForm("emailjsservice", "template_90a6rja", "#contactForm")
-        .then(
-          function (response) {
-            showSlider("Thank you😊! Looking forward talking with you.");
-            contactForm.reset();
-          },
-          function (error) {
-            console.error("Email sending error:", error);
-            showSlider("Oops😕! Something went wrong. Please try again later ");
-          }
-        );
-    });
-  }
-
-  // Smooth scrolling for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      const targetId = this.getAttribute("href");
-      if (targetId === "#") return;
-
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        // Calculate header height for offset
-        const headerHeight = header.offsetHeight;
-
-        window.scrollTo({
-          top: targetElement.offsetTop - headerHeight,
-          behavior: "smooth",
-        });
-      }
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      currentSlide = index;
+      showSlide(currentSlide);
     });
   });
 
-  // Animation on scroll
-  const animateOnScroll = function () {
-    const elements = document.querySelectorAll(
-      ".service-card, .work-item, .about-image, .about-text"
-    );
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % testimonialSlides.length;
+    showSlide(currentSlide);
+  }, 5000);
 
-    elements.forEach((element) => {
-      const elementPosition = element.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-
-      if (elementPosition < windowHeight - 100) {
-        element.classList.add("animate");
-      }
+  function showSlide(index) {
+    testimonialSlides.forEach((slide) => {
+      slide.classList.remove("active");
     });
-  };
+    dots.forEach((dot) => {
+      dot.classList.remove("active");
+    });
 
-  // Run animation check on load and scroll
-  window.addEventListener("load", animateOnScroll);
-  window.addEventListener("scroll", animateOnScroll);
+    testimonialSlides[index].classList.add("active");
+    dots[index].classList.add("active");
+  }
+}
 
-  // Add CSS for animations
-  const style = document.createElement("style");
-  style.textContent = `
+// Contact Form Submission
+if (contactForm) {
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const number = document.getElementById("number").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !number) {
+      showSlider("Please fill all the required fields.");
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      showSlider("Please enter a valid email address.");
+      return;
+    }
+
+    const numberPattern = /^\+?\d{7,15}$/;
+    if (!numberPattern.test(number)) {
+      showSlider("Please enter a valid phone number.");
+      return;
+    }
+
+    // Send email using EmailJS
+    emailjs.sendForm("emailjsservice", "template_90a6rja", "#contactForm").then(
+      function (response) {
+        showSlider("Thank you😊! Looking forward talking with you.");
+        contactForm.reset();
+      },
+      function (error) {
+        console.error("Email sending error:", error);
+        showSlider("Oops😕! Something went wrong. Please try again later ");
+      }
+    );
+  });
+}
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const targetId = this.getAttribute("href");
+    if (targetId === "#") return;
+
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      // Calculate header height for offset
+      const headerHeight = header.offsetHeight;
+
+      window.scrollTo({
+        top: targetElement.offsetTop - headerHeight,
+        behavior: "smooth",
+      });
+    }
+  });
+});
+
+// Animation on scroll
+const animateOnScroll = function () {
+  const elements = document.querySelectorAll(
+    ".service-card, .work-item, .about-image, .about-text"
+  );
+
+  elements.forEach((element) => {
+    const elementPosition = element.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+
+    if (elementPosition < windowHeight - 100) {
+      element.classList.add("animate");
+    }
+  });
+};
+
+// Run animation check on load and scroll
+window.addEventListener("load", animateOnScroll);
+window.addEventListener("scroll", animateOnScroll);
+
+// Add CSS for animations
+const style = document.createElement("style");
+style.textContent = `
         .service-card, .work-item, .about-image, .about-text {
             opacity: 0;
             transform: translateY(30px);
@@ -212,5 +200,4 @@ document.addEventListener("DOMContentLoaded", function () {
             transform: rotate(-45deg) translate(5px, -5px);
         }
     `;
-  document.head.appendChild(style);
-});
+document.head.appendChild(style);
