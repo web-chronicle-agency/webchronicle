@@ -1,5 +1,3 @@
-/* global emailjs */
-emailjs.init("B3chDBzEpo7GvLByU");
 // Variables
 const header = document.querySelector("header");
 const navToggle = document.getElementById("navToggle");
