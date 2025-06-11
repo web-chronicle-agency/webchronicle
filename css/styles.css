@@ -839,6 +839,15 @@ nav {
     padding: 0 var(--spacing-lg);
 }
 
+.testimonial-slide {
+  display: none;
+  transition: opacity 0.5s ease;
+}
+
+.testimonial-slide.active {
+  display: block;
+}
+
 .testimonial-content {
     background-color: #1a1a1a;
     border-radius: var(--border-radius-lg);
