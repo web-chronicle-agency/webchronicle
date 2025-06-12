@@ -1142,7 +1142,7 @@ footer {
     font-size: var(--font-size-2xl);
     font-weight: 700;
     margin-bottom: var(--spacing-md);
-    display: inline-block;
+    display: flex;
 }
 
 .footer-logo p {
